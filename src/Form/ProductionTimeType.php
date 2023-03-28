@@ -21,6 +21,7 @@ class ProductionTimeType extends AbstractType
                 'label' => 'Projet concerné',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')
+                        ->where('p.deliveryDate IS NULL')
                         ->orderBy('p.name', 'ASC');
                 },
                 'choice_label' => 'name'

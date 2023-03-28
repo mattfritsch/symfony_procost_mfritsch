@@ -119,11 +119,7 @@
                                 </th>
                                 <th>{{ lastProject.project.createdAt|format_datetime(locale='fr',pattern="dd/MM/YYYY") }}</th>
                                 <th>{{ lastProject.project.sellingPrice }} €</th>
-                                {% if lastProject.total is same as null %}
-                                    <th><span class="badge badge-danger">Non livré</span></th>
-                                {% else %}
-                                    <th>{{ lastProject.total }} €</th>
-                                {% endif %}
+                                <th>{{ lastProject.total }} €</th>
                                 {% if lastProject.project.deliveryDate is same as null %}
                                     <th>
                                         <span class="badge badge-danger">NON</span>
