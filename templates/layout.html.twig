@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% set current_path = app.request.get('_route') %}
+
+{% block body %}
+    <!-- Navbar -->
+    <header class="app-header"><a class="app-header__logo" href="{{ path('dashboard') }}">Procost</a>
+        <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+        <!-- Navbar Right Menu-->
+        <ul class="app-nav">
+            <li class="app-search">
+                <a href="{{ path('dashboard') }}" class="btn btn-info">Se déconnecter</a>
+            </li>
+        </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+        <div class="app-sidebar__user">
+            <img class="app-sidebar__user-avatar" src="{{ asset('img/user.jpg') }}" alt="User Image">
+            <div>
+                <p class="app-sidebar__user-name">John Doe</p>
+                <p class="app-sidebar__user-designation">Manager</p>
+            </div>
+        </div>
+        <ul class="app-menu">
+            <li>
+                <a class="app-menu__item {{ current_path is same as 'dashboard' ? 'active' }}" href="{{ path('dashboard') }}">
+                    <i class="app-menu__icon fa fa-dashboard"></i>
+                    <span class="app-menu__label">Tableau de bord</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item {{ current_path is same as 'app_project' or
+                current_path is same as 'project_show_details' or
+                current_path is same as 'project_add' or
+                current_path is same as 'project_edit'
+                ? 'active' }}" href="{{ path('app_project') }}">
+                    <i class="app-menu__icon fa fa-laptop"></i>
+                    <span class="app-menu__label">Projets</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item {{ current_path is same as 'app_employee' or
+                current_path is same as 'employee_show_details' or
+                current_path is same as 'employee_add' or
+                current_path is same as 'employee_edit' ? 'active' }}" href="{{ path('app_employee') }}">
+                    <i class="app-menu__icon fa fa-users"></i>
+                    <span class="app-menu__label">Employés</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item {{ current_path is same as 'app_job' or
+                current_path is same as 'job_show_details' or
+                current_path is same as 'job_add' or
+                current_path is same as 'job_edit' ? 'active' }}" href="{{ path('app_job') }}">
+                    <i class="app-menu__icon fa fa-book"></i>
+                    <span class="app-menu__label">Métiers</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <div>
+        {% block content %}{% endblock %}
+        <footer class="main-footer">
+            &copy; {{ "now"|date("Y") }} - PROCOST
+        </footer>
+    </div>
+
+{% endblock %}

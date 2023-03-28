@@ -1,0 +1,133 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <main class="app-content">
+        <div class="app-title">
+            <div>
+                <h1><i class="fa fa-users"></i>&nbsp;Suivi de {{ employee.firstName }} {{ employee.lastName|upper }}</h1>
+            </div>
+            <ul class="app-breadcrumb breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ path('dashboard') }}"><i class="fa fa-home fa-lg"></i></a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ path('app_employee') }}">Employés</a>
+                </li>
+                <li class="breadcrumb-item">Suivi de {{ employee.firstName|capitalize }} {{ employee.lastName|upper }}</li>
+            </ul>
+        </div>
+        {% for flash_type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-dismissible alert-{{ flash_type }} my-4">
+                    <button class="close" type="button" data-dismiss="alert">×</button>
+                    {% if flash_type == 'success' %}
+                        <strong>Super!</strong>
+                    {% endif %}
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="tile">
+                    <table class="table table-striped table-bordered table-sm">
+                        <tbody>
+                        <tr>
+                            <th>Prénom</th>
+                            <td>{{ employee.firstName|capitalize }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ employee.lastName|upper }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ employee.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Métier</th>
+                            <td>{{ employee.job.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Coût journalier</th>
+                            <td>{{ employee.dailyCost }} €</td>
+                        </tr>
+                        <tr>
+                            <th>Date d'embauche</th>
+                            <td>{{ employee.hiringDate|format_datetime(locale='fr',pattern="dd MMMM YYYY")|capitalize }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="{{ path('employee_edit', {'id' : employee.id}) }}" class="btn btn-info">
+                        <i class="fa fa-pencil"></i>Modifier
+                    </a>
+                </div>
+                <div class="tile">
+                    <h3 class="title-title mb-4">Ajouter un temps</h3>
+                        {{ form_start(form, {'attr ': {'class' : 'form-horizontal'}}) }}
+                            <div class="form-group row">
+                                {{ form_label(form.project, null, {
+                                        'label_attr': {'class': 'control-label col-md-6'}
+                                    })
+                                }}
+                                <div class="col-md-6">
+                                    {{ form_widget(form.project, {'attr': {'class': 'form-control', 'placeholder': form.project.vars.label}}) }}
+                                    <div class="form-control-feedback text-danger">
+                                        {{ form_errors(form.project) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                {{ form_label(form.productionTime, null, {
+                                        'label_attr': {'class': 'control-label col-md-6'}
+                                    })
+                                }}
+                                <div class="col-md-6">
+                                    {{ form_widget(form.productionTime, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="form-control-feedback text-danger">
+                                        {{ form_errors(form.productionTime) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="offset-md-6 col-md-8">
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i>Enregistrer</button>
+                                </div>
+                            </div>
+                        {{ form_end(form) }}
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="tile pb-5">
+                    <h3 class="tile-title">Historique des temps de production</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-sm">
+                            <thead>
+                            <tr>
+                                <th>Projet</th>
+                                <th>Temps</th>
+                                <th>Date de saisie</th>
+                                <th>Coût total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, productionTime in productionTimes %}
+                                <tr>
+                                    <td>{{ productionTime.project.name|capitalize }}</td>
+                                    <td>{{ productionTime.productionTime }} jours</td>
+                                    <td>{{ productionTime.entryDate|format_datetime(locale='fr', pattern="dd-MM-yyyy") }}</td>
+                                    <td>{{ productionTime.productionTime * productionTime.employee.dailyCost }} €</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr/>
+                    <nav class="float-right">
+                        {{ knp_pagination_render(productionTimes) }}
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

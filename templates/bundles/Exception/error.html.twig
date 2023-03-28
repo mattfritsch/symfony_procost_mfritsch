@@ -1,0 +1,5 @@
+{% extends 'layout.html.twig' %}
+{% block content %}
+    <img src="https://http.cat/{{ status_code }}" alt="{{ status_code }}">
+    <a href="{{ path('dashboard') }}">Retour à la page d'accueil</a>
+{% endblock %}

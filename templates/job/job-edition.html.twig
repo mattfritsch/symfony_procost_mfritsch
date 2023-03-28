@@ -1,0 +1,60 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <main class="app-content">
+        <div class="app-title">
+            <div>
+                <h1><i class="fa fa-book"></i>&nbsp;Edition d'un métier</h1>
+            </div>
+            <ul class="app-breadcrumb breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ path('dashboard') }}"><i class="fa fa-home fa-lg"></i></a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ path('app_job') }}">Métiers</a>
+                </li>
+                <li class="breadcrumb-item">Edition d'un métier</li>
+            </ul>
+        </div>
+        <div class="tile">
+            {% for flash_type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-dismissible alert-{{ flash_type }} my-4">
+                        <button class="close" type="button" data-dismiss="alert">×</button>
+                        {% if flash_type == 'success' %}
+                            <strong>Super!</strong>
+                        {% endif %}
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(form, {'attr': {'class' : 'form-horizontal'}}) }}
+            <section>
+                <h3>Information générale</h3>
+                <div class="row mt-4">
+                    <div class="offset-md-4 col-md-8">
+                        <div class="form-group row">
+                            {{ form_label(form.name, null, {
+                                'label_attr': {'class': 'control-label col-md-3'}
+                            })
+                            }}
+                            <div class="col-md-9">
+                                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': form.name.vars.label}}) }}
+                                <div class="form-control-feedback text-danger">
+                                    {{ form_errors(form.name) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="row">
+                <div class="offset-md-6 col-md-6">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i>Enregistrer</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </main>
+{% endblock %}
