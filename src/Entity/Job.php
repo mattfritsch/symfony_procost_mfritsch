@@ -34,4 +34,20 @@ class Job
     {
         $this->name = $name;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getEmployees(): Collection
+    {
+        return $this->employees;
+    }
+
+    /**
+     * @param Collection $employees
+     */
+    public function setEmployees(Collection $employees): void
+    {
+        $this->employees = $employees;
+    }
 }

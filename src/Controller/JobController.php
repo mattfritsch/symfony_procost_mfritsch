@@ -7,6 +7,7 @@ use App\Entity\Job;
 use App\Form\JobType;
 use App\Manager\Job\JobManager;
 use App\Repository\JobRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,5 +71,16 @@ final class JobController extends AbstractController
         return $this->render('job/job-edition.html.twig', [
             'form' => $form
         ]);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    #[Route('/job/remove/{id}', name: 'job_remove', requirements: ['id' => '\d+'])]
+    public function removeJob(int $id): Response
+    {
+        $this->jobRepository->remove($this->jobRepository->findOneById($id), true);
+
+        return $this->redirectToRoute('app_job');
     }
 }
